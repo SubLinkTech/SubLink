@@ -39,8 +39,8 @@ public sealed class OSCSupportService(ILogger logger, ScriptGlobals globals)
         _globals.oscQuery.RefreshServices();
 
         /*
-        CommonGlobals.oscQuery.AddEndpoint<bool>("/avatar/parameters/MuteSelf", Attributes.AccessValues.ReadWrite, new object[] { true }); 
-        CommonGlobals.oscServer.TryAddMethod("/avatar/parameters/MuteSelf", message => {
+        _globals.oscQuery.AddEndpoint<bool>("/avatar/parameters/MuteSelf", Attributes.AccessValues.ReadWrite, new object[] { true }); 
+        _globals.oscServer.TryAddMethod("/avatar/parameters/MuteSelf", message => {
             _logger.Information($"Received `/avatar/parameters/MuteSelf` value from VRChat : {message.ReadBooleanElement(0)}");
         });
         */

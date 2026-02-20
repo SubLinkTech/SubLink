@@ -167,10 +167,12 @@ Select a voice channel.
 
 - Parameters
    - `string` channelId - required - ID of the channel to select
+   - `bool`   force     - optional - Force channel changing when already connected to a VC (defaults to true)
 - Returns: Nothing
 
 ```csharp
 discord.SelectVoiceChannel("123_channel_id_789");
+discord.SelectVoiceChannel("123_channel_id_789", false);
 ```
 
 [Back To Legend](#Legend)

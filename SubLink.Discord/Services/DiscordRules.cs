@@ -88,8 +88,8 @@ public sealed class DiscordRules : IPlatformRules {
     public void UnsubscribeEvent(string eventName, string? id = null) =>
         _service?.UnsubscribeEvent(eventName, id);
 
-    public void SelectVoiceChannel(string channelId) =>
-        _service?.SelectVoiceChannel(channelId);
+    public void SelectVoiceChannel(string channelId, bool force = true) =>
+        _service?.SelectVoiceChannel(channelId, force);
 
     public void SelectTextChannel(string channelId) =>
         _service?.SelectTextChannel(channelId);

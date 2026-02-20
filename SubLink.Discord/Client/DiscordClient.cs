@@ -333,9 +333,12 @@ internal class DiscordClient(ILogger logger) : IDisposable {
 
                 return;
             }
+            case "GET_CHANNEL":
             case "GET_SELECTED_VOICE_CHANNEL": {
-                if (resp.TryGetProperty("data", out var vc) && vc.TryGetProperty("channel_id", out var cid))
-                    OnSelectedVoiceChannel?.Invoke(this, new(cid.GetString() ?? string.Empty));
+                if (resp.TryGetProperty("data", out var vc) &&
+                    vc.TryGetProperty("id", out var cid) &&
+                    vc.TryGetProperty("guild_id", out var gid))
+                    OnSelectedVoiceChannel?.Invoke(this, new(cid.GetString() ?? string.Empty, gid.GetString() ?? string.Empty));
 
                 return;
             }
@@ -358,8 +361,10 @@ internal class DiscordClient(ILogger logger) : IDisposable {
                 return;
             }
             case "VOICE_CHANNEL_SELECT": {
-                if (evt.TryGetProperty("data", out var vc) && vc.TryGetProperty("channel_id", out var cid))
-                    OnSelectedVoiceChannel?.Invoke(this, new(cid.GetString() ?? string.Empty));
+                if (evt.TryGetProperty("data", out var vc) &&
+                    vc.TryGetProperty("channel_id", out var cid) &&
+                    vc.TryGetProperty("guild_id", out var gid))
+                    OnSelectedVoiceChannel?.Invoke(this, new(cid.GetString() ?? string.Empty, gid.GetString() ?? string.Empty));
 
                 return;
             }

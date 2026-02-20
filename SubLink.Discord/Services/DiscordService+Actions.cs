@@ -64,8 +64,8 @@ internal sealed partial class DiscordService {
         _discord?.SendCommand(1, DiscordIpcMessage.Unsubscribe(eventName, args));
     }
 
-    public void SelectVoiceChannel(string channelId) =>
-        _discord?.SendCommand(1, DiscordIpcMessage.SelectVoiceChannel(channelId));
+    public void SelectVoiceChannel(string channelId, bool force) =>
+        _discord?.SendCommand(1, DiscordIpcMessage.SelectVoiceChannel(channelId, force));
 
     public void SelectTextChannel(string channelId) =>
         _discord?.SendCommand(1, DiscordIpcMessage.SelectTextChannel(channelId));

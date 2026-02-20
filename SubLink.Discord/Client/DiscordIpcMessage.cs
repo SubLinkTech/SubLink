@@ -57,10 +57,10 @@ internal static class DiscordIpcMessage {
             nonce = $"{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}"
         };
 
-    public static object SelectVoiceChannel(string channelId) =>
+    public static object SelectVoiceChannel(string channelId, bool indForce) =>
         new {
             cmd = "SELECT_VOICE_CHANNEL",
-            args = new { channel_id = channelId },
+            args = new { channel_id = channelId, force = indForce },
             nonce = $"{DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()}"
         };
 

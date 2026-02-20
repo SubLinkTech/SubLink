@@ -45,8 +45,9 @@ public sealed class DiscordChannelEventArgs(string id, string name) : DiscordCha
     public string Name { get; init; } = name;
 }
 
-public sealed class DiscordVoiceChannelIdEventArgs(string voicechannelId) : EventArgs {
-    public string VoiceChannelId { get; init; } = voicechannelId;
+public sealed class DiscordVoiceChannelIdEventArgs(string vcId,  string guildId) : EventArgs {
+    public string VoiceChannelId { get; init; } = vcId;
+    public string GuildId { get; init; } = guildId;
 }
 
 public sealed class DiscordUserIdEventArgs(string userId) : EventArgs {
