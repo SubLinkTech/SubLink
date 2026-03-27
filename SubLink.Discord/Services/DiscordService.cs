@@ -118,8 +118,9 @@ internal sealed partial class DiscordService {
             if (await _discord.Authenticate(_accessToken)) {
                 _logger.Information("[{TAG}] Authenticated successfully!", Platform.PlatformName);
                 // Subscribe to common events
-                _discord.SendDataAndWait(1, DiscordIpcMessage.Subscribe("READY"));
-                _discord.SendDataAndWait(1, DiscordIpcMessage.Subscribe("ERROR"));
+                //_discord.SendDataAndWait(1, DiscordIpcMessage.Subscribe("READY"));
+                //_discord.SendDataAndWait(1, DiscordIpcMessage.Subscribe("ERROR"));
+                // ^ No longer needed, These are dispatched by default ^
 
                 if (!string.IsNullOrEmpty(_settings.DefaultGuildId))
                     _discord.SendDataAndWait(1, DiscordIpcMessage.Subscribe("GUILD_STATUS", new { guild_id = _settings.DefaultGuildId }));
@@ -156,6 +157,10 @@ internal sealed partial class DiscordService {
             _logger.Debug("[{TAG}] Discord Platform started!", Platform.PlatformName);
             _discordLoggedInScope = _serviceScopeFactory.CreateScope();
             _rules.SetService(this);
+            Task.Run(async () => {
+                await Task.Delay(TimeSpan.FromSeconds(2));
+                _discord.FireOnReadyEvent();
+            });
             return;
         } catch (Exception ex) {
             _logger.Error("[{TAG}] Error during start: {ERROR}", Platform.PlatformName, ex.Message);

@@ -41,7 +41,7 @@ internal sealed partial class DiscordService {
             }
         }
 
-        _discord?.SendDataAndWait(1, DiscordIpcMessage.Subscribe(eventName, args));
+        _discord?.SendCommand(1, DiscordIpcMessage.Subscribe(eventName, args));
     }
 
     public void UnsubscribeEvent(string eventName, string? id = null) {

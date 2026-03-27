@@ -83,6 +83,7 @@ public class Platform : IPlatform {
         if (_service != null)
             await _service.StartAsync();
     }
+
     public async Task StopServiceAsync() {
         if (_service == null)
             return;

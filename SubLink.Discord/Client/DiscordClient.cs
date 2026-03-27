@@ -19,7 +19,7 @@ internal class DiscordClient(ILogger logger) : IDisposable {
     private readonly ILogger _logger = logger;
 
     internal event EventHandler? OnNeedsRestart;
-    public event EventHandler? OnReady;
+    public event EventHandler<EventArgs>? OnReady;
     public event EventHandler<DiscordErrorArgs>? OnError;
     public event EventHandler<DiscordGuildInfoEventArgs>? OnGuildStatus;
     public event EventHandler<DiscordGuildInfoEventArgs>? OnGuildCreate;
@@ -36,8 +36,8 @@ internal class DiscordClient(ILogger logger) : IDisposable {
     public event EventHandler<DiscordUserIdEventArgs>? OnStartSpeaking;
     public event EventHandler<DiscordUserIdEventArgs>? OnStopSpeaking;
     public event EventHandler<DiscordNotificationEventArgs>? OnNotificationCreate;
-    public event EventHandler? OnActivityJoin;
-    public event EventHandler? OnActivitySpectate;
+    public event EventHandler<EventArgs>? OnActivityJoin;
+    public event EventHandler<EventArgs>? OnActivitySpectate;
     public event EventHandler<DiscordUserIdEventArgs>? OnActivityJoinRequest;
 
     public void Dispose() {
@@ -180,20 +180,21 @@ internal class DiscordClient(ILogger logger) : IDisposable {
             throw new InvalidOperationException("Must call Connect(...) before sending commands.");
 
         // 1) Serialize payload
-        string json = JsonSerializer.Serialize(payload);
-        byte[] body = Encoding.UTF8.GetBytes(json);
+        string payloadJson = JsonSerializer.Serialize(payload);
+        byte[] payloadBytes = Encoding.UTF8.GetBytes(payloadJson);
 
         // 2) Build 8-byte header: [ op (4 bytes) | length (4 bytes) ]
         byte[] header = [
             .. BitConverter.GetBytes(op),
-            .. BitConverter.GetBytes(body.Length)
+            .. BitConverter.GetBytes(payloadBytes.Length)
         ];
 
         // 3) Atomically write header + body
         lock (_writeLock) {
             _pipeClient.Write(header, 0, header.Length);
-            _pipeClient.Write(body, 0, body.Length);
+            _pipeClient.Write(payloadBytes, 0, payloadBytes.Length);
             _pipeClient.Flush();
+            _logger.Debug("[{TAG}] Payload sent: {PAYLOAD}", Platform.PlatformName, payloadJson);
         }
     }
 
@@ -233,6 +234,9 @@ internal class DiscordClient(ILogger logger) : IDisposable {
 
         return false;
     }
+
+    public void FireOnReadyEvent() =>
+        OnReady?.Invoke(this, new());
 
     private static int VoiceStateToInt(string state) =>
         state switch {
@@ -354,10 +358,6 @@ internal class DiscordClient(ILogger logger) : IDisposable {
         int evtCode = EventNameToInt(eventName);
 
         switch (eventName) {
-            case "READY": {
-                OnReady?.Invoke(this, new());
-                return;
-            }
             case "ERROR": {
                 if (evt.TryGetProperty("data", out var err))
                     OnError?.Invoke(this, new(

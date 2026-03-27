@@ -15,7 +15,7 @@ internal class DiscordAuth(string clientId, string clientSecret) {
             new("client_id", _clientId),
             new("client_secret", _clientSecret),
             new("grant_type", "client_credentials"),
-            new("scope", "rpc rpc.voice.read rpc.voice.write")
+            new("scope", "rpc rpc.voice.read rpc.voice.write rpc.notifications.read messages.read identify")
         ]);
 
         HttpResponseMessage response = await httpClient.PostAsync("https://discord.com/api/oauth2/token", content);
