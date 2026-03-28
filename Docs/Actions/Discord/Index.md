@@ -110,7 +110,7 @@ Sets the input volume to the requested amount.
 - Returns: Nothing
 
 ```csharp
-discord.SetInputVolume(0.75f);
+discord.SetInputVolume(90.75f);
 ```
 
 [Back To Legend](#Legend)
@@ -124,7 +124,7 @@ Sets the output volume to the requested amount.
 - Returns: Nothing
 
 ```csharp
-discord.SetOutputVolume(0.25f);
+discord.SetOutputVolume(93.123f);
 ```
 
 [Back To Legend](#Legend)
@@ -269,11 +269,11 @@ Sets the voice volume for another user.
 
 - Parameters
    - `string` userId - required - ID of the user to set the volume for
-   - `float`  vol    - required - Volume to set the user to
+   - `int`    vol    - required - Volume to set the user to
 - Returns: Nothing
 
 ```csharp
-discord.SetUserVolume("123_user_id_789", 0.15f);
+discord.SetUserVolume("123_user_id_789", 50);
 ```
 
 [Back To Legend](#Legend)
