@@ -89,16 +89,16 @@ public sealed class DiscordUserIdEventArgs(string userId) : EventArgs {
 }
 
 public sealed class DiscordNotificationEventArgs(
-    string channelId, string title, string body, string iconUrl, string messageId, bool messageBlocked,
-    string messageContent, string messageTimestamp, string messageEditedTimestamp, bool messagePinned,
-    string messageAuthorId, string messageAuthorUsername, bool messageAuthorIsBot
+    string channelId, string title, string body, string iconUrl, string messageId, string messageContent,
+    string messageTimestamp, bool messagePinned, string messageAuthorId, string messageAuthorUsername,
+    bool messageAuthorIsBot
 ) : EventArgs {
     public string ChannelId { get; init; } = channelId;
     public string Title { get; init; } = title;
     public string Body { get; init; } = body;
     public string IconUrl { get; init; } = iconUrl;
     public DiscordMessageEventArgs Message = new(
-        channelId, messageId, messageBlocked, messageContent, messageTimestamp, messageEditedTimestamp,
+        channelId, messageId, false, messageContent, messageTimestamp, messageTimestamp,
         messagePinned, messageAuthorId, messageAuthorUsername, messageAuthorIsBot
     );
 }
