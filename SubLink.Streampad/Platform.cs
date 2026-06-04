@@ -13,7 +13,7 @@ namespace xyz.yewnyx.SubLink.Streampad;
 
 public class Platform : IPlatform {
     internal const string PlatformName = "StreamPad";
-    internal static string PlatformConfigFile = Path.Combine("settings", $"{PlatformName}.json");
+    internal static string PlatformConfigFile = GlobalUtils.GetSettingsFilePath(PlatformName);
 
 #pragma warning disable IDE0052 // Remove unread private members
 #pragma warning disable IDE1006 // Naming Styles

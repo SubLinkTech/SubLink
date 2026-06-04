@@ -253,7 +253,8 @@ internal sealed partial class TwitchService {
                 await writer.WriteLineAsync("Success!");
                 await writer.FlushAsync();
             }
-            context.Response.OutputStream.Close();
+            // Below causes issues on Linux, test if Windows is OK with this
+            //context.Response.OutputStream.Close();
 
             var code = queryString["code"];
             

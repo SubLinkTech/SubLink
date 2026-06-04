@@ -94,8 +94,11 @@ public sealed class DiscordRules : IPlatformRules {
     public void SelectTextChannel(string channelId) =>
         _service?.SelectTextChannel(channelId);
 
-    public void SetUserVolume(string userId, float vol) =>
+    public void SetUserVolume(string userId, int vol) =>
         _service?.SetUserVolume(userId, vol);
+
+    public void SetUserVolume(string userId, float vol) =>
+        _service?.SetUserVolume(userId, Convert.ToInt32(Math.Round(vol)));
 
     public void MuteUser(string userId) =>
         _service?.SetUserMute(userId, true);
