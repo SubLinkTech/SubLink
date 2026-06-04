@@ -70,8 +70,8 @@ internal sealed partial class DiscordService {
     public void SelectTextChannel(string channelId) =>
         _discord?.SendCommand(1, DiscordIpcMessage.SelectTextChannel(channelId));
 
-    public void SetUserVolume(string userId, float vol) =>
-        _discord?.SendCommand(1, DiscordIpcMessage.SetUserVoiceSettings(userId, volume: (int)vol));
+    public void SetUserVolume(string userId, int vol) =>
+        _discord?.SendCommand(1, DiscordIpcMessage.SetUserVoiceSettings(userId, volume: vol));
 
     public void SetUserMute(string userId, bool mute) =>
         _discord?.SendCommand(1, DiscordIpcMessage.SetUserVoiceSettings(userId, mute: mute));
