@@ -157,7 +157,7 @@ internal sealed partial class DiscordService {
             _logger.Debug("[{TAG}] Discord Platform started!", Platform.PlatformName);
             _discordLoggedInScope = _serviceScopeFactory.CreateScope();
             _rules.SetService(this);
-            Task.Run(async () => {
+            _ = Task.Run(async () => {
                 await Task.Delay(TimeSpan.FromSeconds(2));
                 _discord.FireOnReadyEvent();
             });
