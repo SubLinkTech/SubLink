@@ -11,9 +11,9 @@ using xyz.yewnyx.SubLink.Joystick.Client.Data.Api;
 namespace xyz.yewnyx.SubLink.Joystick.Client.OAuth;
 
 internal sealed class OAuthClient {
+    private const string CAuthUrlFmt = "https://joystick.tv/api/oauth/authorize?response_type=code&client_id={0}&scope=bot&state={1}";
     private const string CJoystickApi = "https://api.joystick.tv/api";
-    private const string CAuthUrlFmt = CJoystickApi + "/oauth/authorize?response_type=code&client_id={0}&scope=bot&state={1}";
-    private const string CRefreshTokenUrlFmt = CJoystickApi + "/oauth/token?refresh_token={0}&grant_type=refresh_token";
+    private const string CRefreshTokenUrlFmt = CJoystickApi + "/oauth/token?grant_type=refresh_token&refresh_token={0}";
     private const string CAuthTokenUrlFmt = CJoystickApi + "/oauth/token?redirect_uri=.&code={0}&grant_type=authorization_code";
     private const int CTimeout = 60 * 1000;
     private const int CPollFreq = 100;
@@ -91,13 +91,13 @@ internal sealed class OAuthClient {
         httpRequest.Content = new StringContent("", Encoding.ASCII, "application/x-www-form-urlencoded");
 
         HttpResponseMessage? httpResponse = MakeHttpRequest(httpRequest);
+        string jsonStr = HttpResponseToContent(httpResponse);
 
         if (null == httpResponse || !httpResponse.IsSuccessStatusCode) {
-            _logger.Error("[{TAG}] Failed with statuscode: {StatusCode}", Platform.PlatformName,
-                httpResponse?.StatusCode ?? HttpStatusCode.InternalServerError);
+            _logger.Error("[{TAG}] Failed with statuscode: {StatusCode}\n{jsonStr}", Platform.PlatformName,
+                httpResponse?.StatusCode ?? HttpStatusCode.InternalServerError, jsonStr);
             IsAuthenticated = false;
         } else {
-            string jsonStr = HttpResponseToContent(httpResponse);
             AuthCodeResponse? authResponse = JsonSerializer.Deserialize<AuthCodeResponse>(jsonStr);
             if (null == authResponse) return;
 

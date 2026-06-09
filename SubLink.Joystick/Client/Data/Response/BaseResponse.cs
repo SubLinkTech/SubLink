@@ -21,11 +21,6 @@ Types:
 [JsonDerivedType(typeof(RejectSubscription), "reject_subscription")]
 [JsonDerivedType(typeof(ConfirmUnsubscription), "confirm_unsubscription")]
 [JsonDerivedType(typeof(RejectUnsubscription), "reject_unsubscription")]
-public interface IBaseResponse {
-    string Type { get; set; }
-}
+public interface IBaseResponse { }
 
-public abstract class BaseResponse : IBaseResponse {
-    [JsonPropertyName("type")]
-    public string Type { get; set; } = string.Empty;
-}
+public abstract class BaseResponse : IBaseResponse { }

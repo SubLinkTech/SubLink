@@ -15,9 +15,14 @@ using xyz.yewnyx.SubLink.Joystick.Client.OAuth;
 namespace xyz.yewnyx.SubLink.Joystick.Client;
 
 internal sealed class JoystickClient(ILogger logger) {
-    private const string _userAgent = "SubLink JoystickClient/1.0";
-    private static readonly JsonSerializerOptions _serializationOpt = new() {
+    private const string CUserAgent = "SubLink JoystickClient/1.0";
+    private const string CSubscribeCommand = "{\"command\":\"subscribe\",\"identifier\": \"{\\\"channel\\\":\\\"GatewayChannel\\\"}\"}";
+    private const string CUnsubscribeCommand = "{\"command\":\"unsubscribe\",\"identifier\": \"{\\\"channel\\\":\\\"GatewayChannel\\\"}\"}";
+    private static readonly JsonSerializerOptions _deserializationOpt = new() {
         AllowOutOfOrderMetadataProperties = true
+    };
+    private static readonly JsonSerializerOptions _serializationOpt = new() {
+        WriteIndented = false
     };
 
     private readonly ILogger _logger = logger;
@@ -67,7 +72,7 @@ internal sealed class JoystickClient(ILogger logger) {
                 $"wss://api.joystick.tv/cable?token={_authClient.AuthCode}",
                 "actioncable-v1-json",
                 version: WebSocketVersion.Rfc6455,
-                userAgent: _userAgent
+                userAgent: CUserAgent
             ) {
                 EnableAutoSendPing = false,
                 NoDelay = true
@@ -80,9 +85,6 @@ internal sealed class JoystickClient(ILogger logger) {
             _socket.DataReceived += OnSockDataReceived;
 
             await _socket.OpenAsync();
-
-            // We, SubLink, should only subscribe to the GatewayChannel
-            SendData(new Subscribe());
         } catch (Exception) {
             return false;
         }
@@ -127,26 +129,36 @@ internal sealed class JoystickClient(ILogger logger) {
     private void OnSockDataReceived(object? sender, DataReceivedEventArgs e) =>
         _logger.Information("[{TAG}] Data received, length: {Length}", Platform.PlatformName, e.Data.Length);
 
-    public void SendData(IBaseCommand cmd) {
+    public void SendCommand(IBaseCommand cmd) {
         if (!Enabled) return;
 
-        _socket?.Send(JsonSerializer.Serialize(cmd));
+        var jsonStr = JsonSerializer.Serialize(cmd, _serializationOpt);
+        _logger.Information("[{TAG}] Sending: {jsonStr}", Platform.PlatformName, jsonStr);
+        _socket?.Send(jsonStr);
+    }
+
+    public void SendString(string str) {
+        if (!Enabled) return;
+
+        _logger.Information("[{TAG}] Sending: {str}", Platform.PlatformName, str);
+        _socket?.Send(str);
     }
 
     private void HandleResponseMessage(string message) {
-        IBaseResponse? inMsg = JsonSerializer.Deserialize<IBaseResponse>(message, _serializationOpt);
+        IBaseResponse? inMsg = JsonSerializer.Deserialize<IBaseResponse>(message, _deserializationOpt);
         if (inMsg == null) return;
+
+        if (!(inMsg is Welcome || inMsg is Ping))
+            _logger.Warning("[{TAG}] HandleResponseMessage, message: {Message}", Platform.PlatformName, message);
 
         switch (inMsg) {
             case Welcome: {
                 _logger.Information("[{TAG}] Welcome received", Platform.PlatformName);
+                // We, SubLink, should only subscribe to the GatewayChannel
+                SendString(CSubscribeCommand);
                 return;
             }
-            case Ping: {
-                Ping responseMsg = (Ping)inMsg;
-                _logger.Information("[{TAG}] Ping received {Timestamp}", Platform.PlatformName, responseMsg.Message);
-                return;
-            }
+            case Ping: return; // Ignore, annoying and useless for anything other than keeping the socket alive
             case ConfirmSubscription: {
                 ConfirmSubscription responseMsg = (ConfirmSubscription)inMsg;
                 _logger.Information("[{TAG}] Confirmed subscription to event `{Channel}` for streamer `{StreamId}`",
@@ -179,7 +191,8 @@ internal sealed class JoystickClient(ILogger logger) {
     }
 
     private void HandleEventMessage(string message) {
-        IBaseEvent? inMsg = JsonSerializer.Deserialize<IBaseEvent>(message, _serializationOpt);
+        _logger.Warning("[{TAG}] HandleEventMessage, message: {Message}", Platform.PlatformName, message);
+        IBaseEvent? inMsg = JsonSerializer.Deserialize<IBaseEvent>(message, _deserializationOpt);
         if (inMsg == null) return;
 
         switch (inMsg) {

@@ -1,17 +1,17 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json.Serialization;
 
 namespace xyz.yewnyx.SubLink.Joystick.Client.OAuth;
 
 public class AuthCodeResponse {
-    [JsonProperty("access_token")]
-    public string AccessToken { get; protected set; } = string.Empty;
+    [JsonPropertyName("access_token"), JsonRequired]
+    public string AccessToken { get; set; } = string.Empty;
 
-    [JsonProperty("token_type")]
-    public string TokenType { get; protected set; } = string.Empty;
+    [JsonPropertyName("token_type"), JsonRequired]
+    public string TokenType { get; set; } = string.Empty;
 
-    [JsonProperty(PropertyName = "expires_in")]
-    public int ExpiresIn { get; protected set; } = -1;
+    [JsonPropertyName("expires_in"), JsonRequired]
+    public int ExpiresIn { get; set; } = -1;
 
-    [JsonProperty(PropertyName = "refresh_token")]
-    public string RefreshToken { get; protected set; } = string.Empty;
+    [JsonPropertyName("refresh_token"), JsonRequired]
+    public string RefreshToken { get; set; } = string.Empty;
 }

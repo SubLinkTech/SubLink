@@ -66,7 +66,6 @@ Types:
 public interface IBaseEvent {
     string Id { get; set; }
     string Event { get; set; }
-    string Type { get; set; }
     string Text { get; set; }
     string ChannelId { get; set; }
     string CreatedAt { get; set; }
@@ -77,8 +76,6 @@ public abstract class  BaseEvent : IBaseEvent {
     public string Id { get; set; } = string.Empty;
     [JsonPropertyName("event")]
     public string Event { get; set; } = string.Empty;
-    [JsonPropertyName("type")]
-    public string Type { get; set; } = string.Empty;
     [JsonPropertyName("text")]
     public string Text { get; set; } = string.Empty;
     [JsonPropertyName("channelId")]
