@@ -1,5 +1,6 @@
 ﻿using Serilog;
 using System;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
 using System.Text;
@@ -20,7 +21,6 @@ internal sealed class OAuthClient {
 
     private readonly ILogger _logger;
     private readonly ushort _oauthPort;
-    private readonly string _clientId;
     private readonly string _authUrl;
 
     public string AccessToken { get; private set; }
@@ -35,7 +35,6 @@ internal sealed class OAuthClient {
         string refreshToken, string state) {
         _logger = logger;
         _oauthPort = oauthPort;
-        _clientId = clientId;
         AccessToken = accessToken;
         RefreshToken = refreshToken;
         State = state;
@@ -112,6 +111,8 @@ internal sealed class OAuthClient {
         WebServer server = new(_oauthPort, State);
         server.Start();
         int pollCount = 0;
+
+        Process.Start(new ProcessStartInfo { FileName = _authUrl, UseShellExecute = true });
 
         while (pollCount++ < CMaxPolls && !server.HasResponse) {
             await Task.Delay(CPollFreq);

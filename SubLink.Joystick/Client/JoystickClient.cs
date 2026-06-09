@@ -138,6 +138,39 @@ internal sealed class JoystickClient(ILogger logger) {
         if (inMsg == null) return;
 
         switch (inMsg) {
+            case Welcome: {
+                _logger.Information("[{TAG}] Welcome received", Platform.PlatformName);
+                return;
+            }
+            case Ping: {
+                Ping responseMsg = (Ping)inMsg;
+                _logger.Information("[{TAG}] Ping received {Timestamp}", Platform.PlatformName, responseMsg.Message);
+                return;
+            }
+            case ConfirmSubscription: {
+                ConfirmSubscription responseMsg = (ConfirmSubscription)inMsg;
+                _logger.Information("[{TAG}] Confirmed subscription to event `{Channel}` for streamer `{StreamId}`",
+                    Platform.PlatformName, responseMsg.Ident.Channel, responseMsg.Ident.StreamId);
+                return;
+            }
+            case RejectSubscription: {
+                RejectSubscription responseMsg = (RejectSubscription)inMsg;
+                _logger.Information("[{TAG}] Rejected subscription to event `{Channel}` for streamer `{StreamId}`",
+                    Platform.PlatformName, responseMsg.Ident.Channel, responseMsg.Ident.StreamId);
+                return;
+            }
+            case ConfirmUnsubscription: {
+                ConfirmUnsubscription responseMsg = (ConfirmUnsubscription)inMsg;
+                _logger.Information("[{TAG}] Confirmed unsubscription to event `{Channel}` for streamer `{StreamId}`",
+                    Platform.PlatformName, responseMsg.Ident.Channel, responseMsg.Ident.StreamId);
+                return;
+            }
+            case RejectUnsubscription: {
+                RejectUnsubscription responseMsg = (RejectUnsubscription)inMsg;
+                _logger.Information("[{TAG}] Rejected unsubscription to event `{Channel}` for streamer `{StreamId}`",
+                    Platform.PlatformName, responseMsg.Ident.Channel, responseMsg.Ident.StreamId);
+                return;
+            }
             default: {
                 _logger.Warning("[{TAG}] Unknown data received, message: {Message}", Platform.PlatformName, message);
                 return;
@@ -150,6 +183,10 @@ internal sealed class JoystickClient(ILogger logger) {
         if (inMsg == null) return;
 
         switch (inMsg) {
+            case StartedEvent: {
+                StartedEvent eventMsg = (StartedEvent)inMsg;
+                return;
+            }
             default: {
                 _logger.Warning("[{TAG}] Unknown data received, message: {Message}", Platform.PlatformName, message);
                 return;
