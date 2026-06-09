@@ -45,6 +45,7 @@ public class Platform : IPlatform {
     "ClientSecret": "",
     "AccessToken": "",
     "RefreshToken": "",
+    "State": "",
     "Username": "",
     "ChannelId": ""
   }

@@ -19,8 +19,4 @@
       <HintPath>..\Dist\SubLink.References.dll</HintPath>
     </Reference>
   </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Client\OAuth\" />
-  </ItemGroup>
 </Project>

@@ -25,6 +25,9 @@ public sealed class JoystickSettings {
     [JsonPropertyName("RefreshToken"), ConfigurationKeyName("RefreshToken")]
     public string RefreshToken { get; init; }
 
+    [JsonPropertyName("State"), ConfigurationKeyName("State")]
+    public string State { get; init; }
+
     [JsonPropertyName("Username"), ConfigurationKeyName("Username")]
     public string Username { get; init; }
 
@@ -35,6 +38,8 @@ public sealed class JoystickSettings {
     public JoystickSettings() { }
 #pragma warning restore CS8618 // Non-nullable field must contain a non-null value when exiting constructor. Consider declaring as nullable.
     
-    public JoystickSettings(bool enabled, ushort oauthPort, string applicationId, string clientId, string clientSecret, string accessToken, string refreshToken, string username, string channelId) =>
-        (Enabled, OAuthPort, ApplicationId, ClientId, ClientSecret, AccessToken, RefreshToken, Username, ChannelId) = (enabled, oauthPort, applicationId, clientId, clientSecret, accessToken, refreshToken, username, channelId);
+    public JoystickSettings(bool enabled, ushort oauthPort, string applicationId, string clientId, string clientSecret,
+        string accessToken, string refreshToken, string state, string username, string channelId) =>
+        (Enabled, OAuthPort, ApplicationId, ClientId, ClientSecret, AccessToken, RefreshToken, State, Username, ChannelId) =
+            (enabled, oauthPort, applicationId, clientId, clientSecret, accessToken, refreshToken, state, username, channelId);
 }
