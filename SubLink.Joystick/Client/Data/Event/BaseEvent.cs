@@ -2,38 +2,38 @@
 
 namespace xyz.yewnyx.SubLink.Joystick.Client.Data.Event;
 
+[JsonPolymorphic(
+    UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToNearestAncestor,
+    TypeDiscriminatorPropertyName = "type"
+)]
+[JsonDerivedType(typeof(EnterStreamEvent), "enter_stream")]
+[JsonDerivedType(typeof(LeaveStreamEvent), "leave_stream")]
+[JsonDerivedType(typeof(StartedEvent), "Started")]
+[JsonDerivedType(typeof(StreamResumingEvent), "StreamResuming")]
+[JsonDerivedType(typeof(StreamEndingEvent), "StreamEnding")]
+[JsonDerivedType(typeof(EndedEvent), "Ended")]
+[JsonDerivedType(typeof(FollowedEvent), "Followed")]
+[JsonDerivedType(typeof(FollowerCountUpdatedEvent), "FollowerCountUpdated")]
+[JsonDerivedType(typeof(TippedEvent), "Tipped")]
+[JsonDerivedType(typeof(TipGoalCreatedEvent), "TipGoalCreated")]
+[JsonDerivedType(typeof(TipGoalDeletedEvent), "TipGoalDeleted")]
+[JsonDerivedType(typeof(TipGoalUpdatedEvent), "TipGoalUpdated")]
+[JsonDerivedType(typeof(TipGoalIncreasedEvent), "TipGoalIncreased")]
+[JsonDerivedType(typeof(TipGoalMetEvent), "TipGoalMet")]
+[JsonDerivedType(typeof(TipMenuItemLockedEvent), "TipMenuItemLocked")]
+[JsonDerivedType(typeof(TipMenuItemUnlockedEvent), "TipMenuItemUnlocked")]
+[JsonDerivedType(typeof(ChatTimerStartedEvent), "ChatTimerStarted")]
+[JsonDerivedType(typeof(ChatTimersClearedEvent), "ChatTimersCleared")]
+[JsonDerivedType(typeof(DropinStreamEvent), "DropinStream")]
+[JsonDerivedType(typeof(StreamDroppedInEvent), "StreamDroppedIn")]
+[JsonDerivedType(typeof(SubscribedEvent), "Subscribed")]
+[JsonDerivedType(typeof(ResubscribedEvent), "Resubscribed")]
+[JsonDerivedType(typeof(GiftedSubscriptionsEvent), "GiftedSubscriptions")]
+[JsonDerivedType(typeof(WheelSpinClaimedEvent), "WheelSpinClaimed")]
+[JsonDerivedType(typeof(ViewerCountUpdatedEvent), "ViewerCountUpdated")]
+[JsonDerivedType(typeof(SubscriberCountUpdatedEvent), "SubscriberCountUpdated")]
+[JsonDerivedType(typeof(MilestoneCompletedEvent), "MilestoneCompleted")]
 /*
-Types:
-- StreamResuming (event = StreamEvent)
-- StreamEnding (event = StreamEvent)
-- Ended (event = StreamEvent)
-
-- Followed (event = StreamEvent)
-- FollowerCountUpdated (event = StreamEvent)
-
-- Tipped (event = StreamEvent)
-- TipGoalCreated (event = StreamEvent)
-- TipGoalDeleted (event = StreamEvent)
-- TipGoalUpdated (event = StreamEvent)
-- TipGoalIncreased (event = StreamEvent)
-- TipGoalMet (event = StreamEvent)
-- TipMenuItemLocked (event = StreamEvent)
-- TipMenuItemUnlocked (event = StreamEvent)
-
-- ChatTimerStarted (event = StreamEvent)
-
-- DropinStream (event = StreamEvent)
-- StreamDroppedIn (event = StreamEvent)
-
-- Subscribed (event = StreamEvent)
-- Resubscribed (event = StreamEvent)
-- GiftedSubscriptions (event = StreamEvent)
-
-- WheelSpinClaimed (event = StreamEvent)
-- ViewerCountUpdated (event = StreamEvent)
-- SubscriberCountUpdated (event = StreamEvent)
-- MilestoneCompleted (event = StreamEvent)
-
 - PvpSessionRequested (event = StreamEvent)
 - PvpSessionReady (event = StreamEvent)
 - PvpSessionStarted (event = StreamEvent)
@@ -43,24 +43,12 @@ Types:
 - SceneUpdated (event = StreamEvent)
 - SettingsUpdated (event = StreamEvent)
 - StreamModeUpdated (event = StreamEvent)
-
-- UserMuted (event = StreamEvent)
-- UserUnmuted (event = StreamEvent)
-
-- DeviceConnected (event = StreamEvent)
-- DeviceDisconnected (event = StreamEvent)
-- DeviceSettingsUpdated (event = StreamEvent)
-
-- ChatMessageReceived (event = StreamEvent)
 */
-[JsonPolymorphic(
-    UnknownDerivedTypeHandling = JsonUnknownDerivedTypeHandling.FallBackToNearestAncestor,
-    TypeDiscriminatorPropertyName = "type"
-)]
-[JsonDerivedType(typeof(EnterStreamEvent), "enter_stream")]
-[JsonDerivedType(typeof(LeaveStreamEvent), "leave_stream")]
-[JsonDerivedType(typeof(StartedEvent), "Started")]
-[JsonDerivedType(typeof(ChatTimersClearedEvent), "ChatTimersCleared")]
+[JsonDerivedType(typeof(UserMutedEvent), "UserMuted")]
+[JsonDerivedType(typeof(UserUnmutedEvent), "UserUnmuted")]
+[JsonDerivedType(typeof(DeviceConnectedEvent), "DeviceConnected")]
+[JsonDerivedType(typeof(DeviceDisconnectedEvent), "DeviceDisconnected")]
+[JsonDerivedType(typeof(DeviceSettingsUpdatedEvent), "DeviceSettingsUpdated")]
 public interface IBaseEvent {
     [JsonPropertyName("id")]
     string Id { get; set; }

@@ -36,9 +36,36 @@ internal sealed class JoystickClient(ILogger logger) {
     public event EventHandler<JoystickBotMessageEventArgs>? OnJoystickBotMessage;
     public event EventHandler<JoystickEnterStreamEventArgs>? OnJoystickEnterStream;
     public event EventHandler<JoystickLeaveStreamEventArgs>? OnJoystickLeaveStream;
-    public event EventHandler<JoystickStartedEventArgs>? OnJoystickStarted;
-    public event EventHandler<JoystickChatTimersClearedEventArgs>? OnJoystickChatTimersCleared;
-
+    public event EventHandler<JoystickWhoEventArgs>? OnJoystickStarted;
+    public event EventHandler<JoystickWhoEventArgs>? OnJoystickStreamResuming;
+    public event EventHandler<JoystickWhoEventArgs>? OnJoystickStreamEnding;
+    public event EventHandler<JoystickWhoEventArgs>? OnJoystickEnded;
+    public event EventHandler<JoystickWhoWhatEventArgs>? OnJoystickFollowed;
+    public event EventHandler<JoystickFollowerCountUpdatedEventArgs>? OnJoystickFollowerCountUpdated;
+    public event EventHandler<JoystickTippedEventArgs>? OnJoystickTipped;
+    public event EventHandler<JoystickTitleAmountEventArgs>? OnJoystickTipGoalCreated;
+    public event EventHandler<JoystickTitleAmountEventArgs>? OnJoystickTipGoalDeleted;
+    public event EventHandler<JoystickTipGoalIncreasedEventArgs>? OnJoystickTipGoalIncreased;
+    public event EventHandler<JoystickWhoWhatTitleAmountEventArgs>? OnJoystickTipGoalMet;
+    public event EventHandler<JoystickTitleAmountEventArgs>? OnJoystickTipGoalUpdated;
+    public event EventHandler<JoystickTitleAmountEventArgs>? OnJoystickTipMenuItemLocked;
+    public event EventHandler<JoystickTitleAmountEventArgs>? OnJoystickTipMenuItemUnlocked;
+    public event EventHandler<JoystickChatTimerStartedEventArgs>? OnJoystickChatTimerStarted;
+    public event EventHandler<JoystickWhoEventArgs>? OnJoystickChatTimersCleared;
+    public event EventHandler<JoystickDropinStreamEventArgs>? OnJoystickDropinStream;
+    public event EventHandler<JoystickStreamDroppedInEventArgs>? OnJoystickStreamDroppedIn;
+    public event EventHandler<JoystickWhoWhatAmountEventArgs>? OnJoystickSubscribed;
+    public event EventHandler<JoystickResubscribedEventArgs>? OnJoystickResubscribed;
+    public event EventHandler<JoystickWhoWhatAmountEventArgs>? OnJoystickGiftedSubscriptions;
+    public event EventHandler<JoystickWheelSpinClaimedEventArgs>? OnJoystickWheelSpinClaimed;
+    public event EventHandler<JoystickAmountEventArgs>? OnJoystickViewerCountUpdated;
+    public event EventHandler<JoystickAmountEventArgs>? OnJoystickSubscriberCountUpdated;
+    public event EventHandler<JoystickWhoWhatTitleAmountEventArgs>? OnJoystickMilestoneCompleted;
+    public event EventHandler<JoystickWhoWhatEventArgs>? OnJoystickUserMuted;
+    public event EventHandler<JoystickWhoWhatEventArgs>? OnJoystickUserUnmuted;
+    public event EventHandler<JoystickEventArgs>? OnJoystickDeviceConnected;
+    public event EventHandler<JoystickEventArgs>? OnJoystickDeviceDisconnected;
+    public event EventHandler<JoystickEventArgs>? OnJoystickDeviceSettingsUpdated;
 
     public bool Enabled { get; internal set; } = false;
 
@@ -290,9 +317,171 @@ internal sealed class JoystickClient(ILogger logger) {
                 OnJoystickStarted?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who));
                 return;
             }
+            case StreamResumingEvent: {
+                StreamResumingEvent eventMsg = (StreamResumingEvent)inMsg;
+                OnJoystickStreamResuming?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who));
+                return;
+            }
+            case StreamEndingEvent: {
+                StreamEndingEvent eventMsg = (StreamEndingEvent)inMsg;
+                OnJoystickStreamEnding?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who));
+                return;
+            }
+            case EndedEvent: {
+                EndedEvent eventMsg = (EndedEvent)inMsg;
+                OnJoystickEnded?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who));
+                return;
+            }
+            case FollowedEvent: {
+                FollowedEvent eventMsg = (FollowedEvent)inMsg;
+                OnJoystickFollowed?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What));
+                return;
+            }
+            case FollowerCountUpdatedEvent: {
+                FollowerCountUpdatedEvent eventMsg = (FollowerCountUpdatedEvent)inMsg;
+                    OnJoystickFollowerCountUpdated?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt,
+                        eventMsg.Metadata.NumberOfFollowers));
+                return;
+            }
+            case TippedEvent: {
+                TippedEvent eventMsg = (TippedEvent)inMsg;
+                OnJoystickTipped?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What, eventMsg.Metadata.Amount, eventMsg.Metadata.TipMenuItem));
+                return;
+            }
+            case TipGoalCreatedEvent: {
+                TipGoalCreatedEvent eventMsg = (TipGoalCreatedEvent)inMsg;
+                OnJoystickTipGoalCreated?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Title,
+                    eventMsg.Metadata.Amount));
+                return;
+            }
+            case TipGoalDeletedEvent: {
+                TipGoalDeletedEvent eventMsg = (TipGoalDeletedEvent)inMsg;
+                OnJoystickTipGoalDeleted?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Title,
+                    eventMsg.Metadata.Amount));
+                return;
+            }
+            case TipGoalIncreasedEvent: {
+                TipGoalIncreasedEvent eventMsg = (TipGoalIncreasedEvent)inMsg;
+                OnJoystickTipGoalIncreased?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.What,
+                    eventMsg.Metadata.Amount, eventMsg.Metadata.ByUser, eventMsg.Metadata.Current, eventMsg.Metadata.Previous));
+                return;
+            }
+            case TipGoalMetEvent: {
+                TipGoalMetEvent eventMsg = (TipGoalMetEvent)inMsg;
+                OnJoystickTipGoalMet?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What, eventMsg.Metadata.Title, eventMsg.Metadata.Amount));
+                return;
+            }
+            case TipGoalUpdatedEvent: {
+                TipGoalUpdatedEvent eventMsg = (TipGoalUpdatedEvent)inMsg;
+                OnJoystickTipGoalUpdated?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Title,
+                    eventMsg.Metadata.Amount));
+                return;
+            }
+            case TipMenuItemLockedEvent: {
+                TipMenuItemLockedEvent eventMsg = (TipMenuItemLockedEvent)inMsg;
+                OnJoystickTipMenuItemLocked?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Title,
+                    eventMsg.Metadata.Amount));
+                return;
+            }
+            case TipMenuItemUnlockedEvent: {
+                TipMenuItemUnlockedEvent eventMsg = (TipMenuItemUnlockedEvent)inMsg;
+                OnJoystickTipMenuItemUnlocked?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Title,
+                    eventMsg.Metadata.Amount));
+                return;
+            }
+            case ChatTimerStartedEvent: {
+                ChatTimerStartedEvent eventMsg = (ChatTimerStartedEvent)inMsg;
+                OnJoystickChatTimerStarted?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Name,
+                    eventMsg.Metadata.EndsAt));
+                return;
+            }
             case ChatTimersClearedEvent: {
                 ChatTimersClearedEvent eventMsg = (ChatTimersClearedEvent)inMsg;
                 OnJoystickChatTimersCleared?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who));
+                return;
+            }
+            case DropinStreamEvent: {
+                DropinStreamEvent eventMsg = (DropinStreamEvent)inMsg;
+                OnJoystickDropinStream?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Origin,
+                    eventMsg.Metadata.Destination, eventMsg.Metadata.NumberOfViewers, eventMsg.Metadata.DestinationUsername));
+                return;
+            }
+            case StreamDroppedInEvent: {
+                StreamDroppedInEvent eventMsg = (StreamDroppedInEvent)inMsg;
+                OnJoystickStreamDroppedIn?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What, eventMsg.Metadata.NumberOfViewers));
+                return;
+            }
+            case SubscribedEvent: {
+                SubscribedEvent eventMsg = (SubscribedEvent)inMsg;
+                OnJoystickSubscribed?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What, eventMsg.Metadata.HowMuch));
+                return;
+            }
+            case ResubscribedEvent: {
+                ResubscribedEvent eventMsg = (ResubscribedEvent)inMsg;
+                OnJoystickResubscribed?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What, eventMsg.Metadata.HowMuch, eventMsg.Metadata.HowLong));
+                return;
+            }
+            case GiftedSubscriptionsEvent: {
+                GiftedSubscriptionsEvent eventMsg = (GiftedSubscriptionsEvent)inMsg;
+                OnJoystickGiftedSubscriptions?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What, eventMsg.Metadata.HowMuch));
+                return;
+            }
+            case WheelSpinClaimedEvent: {
+                WheelSpinClaimedEvent eventMsg = (WheelSpinClaimedEvent)inMsg;
+                OnJoystickWheelSpinClaimed?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What, eventMsg.Metadata.Amount, eventMsg.Metadata.Prize));
+                return;
+            }
+            case ViewerCountUpdatedEvent: {
+                ViewerCountUpdatedEvent eventMsg = (ViewerCountUpdatedEvent)inMsg;
+                OnJoystickViewerCountUpdated?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt,
+                    eventMsg.Metadata.NumberOfViewers));
+                return;
+            }
+            case SubscriberCountUpdatedEvent: {
+                SubscriberCountUpdatedEvent eventMsg = (SubscriberCountUpdatedEvent)inMsg;
+                OnJoystickSubscriberCountUpdated?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt,
+                    eventMsg.Metadata.NumberOfSubscribers));
+                return;
+            }
+            case MilestoneCompletedEvent: {
+                MilestoneCompletedEvent eventMsg = (MilestoneCompletedEvent)inMsg;
+                OnJoystickMilestoneCompleted?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What, eventMsg.Metadata.Title, eventMsg.Metadata.Amount));
+                return;
+            }
+            case UserMutedEvent: {
+                UserMutedEvent eventMsg = (UserMutedEvent)inMsg;
+                OnJoystickUserMuted?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What));
+                return;
+            }
+            case UserUnmutedEvent: {
+                UserUnmutedEvent eventMsg = (UserUnmutedEvent)inMsg;
+                OnJoystickUserUnmuted?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What));
+                return;
+            }
+            case DeviceConnectedEvent: {
+                DeviceConnectedEvent eventMsg = (DeviceConnectedEvent)inMsg;
+                OnJoystickDeviceConnected?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt));
+                return;
+            }
+            case DeviceDisconnectedEvent: {
+                DeviceDisconnectedEvent eventMsg = (DeviceDisconnectedEvent)inMsg;
+                OnJoystickDeviceDisconnected?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt));
+                return;
+            }
+            case DeviceSettingsUpdatedEvent: {
+                DeviceSettingsUpdatedEvent eventMsg = (DeviceSettingsUpdatedEvent)inMsg;
+                OnJoystickDeviceSettingsUpdated?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt));
                 return;
             }
             default: {
