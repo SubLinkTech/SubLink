@@ -22,6 +22,10 @@ internal sealed class JoystickClient(ILogger logger) {
     };
     internal static readonly JsonSerializerOptions _serializationOpt = new() {
         WriteIndented = false,
+        IgnoreReadOnlyFields = false,
+        IgnoreReadOnlyProperties = false,
+        IncludeFields = true,
+        AllowTrailingCommas = false,
         Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
     };
 
@@ -305,8 +309,7 @@ internal sealed class JoystickClient(ILogger logger) {
     }
 
     private void HandleEventMessage(string message) {
-        _logger.Warning("[{TAG}] HandleEventMessage, message: {Message}", Platform.PlatformName, message);
-        IBaseEvent? inMsg = JsonSerializer.Deserialize<IBaseEvent>(message, _deserializationOpt);
+        var inMsg = JsonSerializer.Deserialize<IBaseEvent>(message, _deserializationOpt);
         if (inMsg == null) return;
 
         switch (inMsg) {

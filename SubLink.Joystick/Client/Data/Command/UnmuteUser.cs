@@ -18,8 +18,6 @@ public sealed class UnmuteUser : BaseCommand {
         public string ChannelId { get; set; } = string.Empty;
     }
 
-    public override string Command { get; } = "message";
-
     [JsonIgnore]
     public readonly ChatData Message = new();
 

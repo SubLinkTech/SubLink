@@ -1,15 +1,34 @@
-﻿using System.Text.Json;
+﻿using System;
+using System.Text.Json;
 using System.Text.Json.Serialization;
 
 namespace xyz.yewnyx.SubLink.Joystick.Client.Data.Command;
 
-public interface IBaseCommand {
-    [JsonPropertyName("command")]
-    string Command { get; }
+[AttributeUsage(AttributeTargets.Interface, AllowMultiple = false)]
+public class JsonInterfaceConverterAttribute(Type converterType) : JsonConverterAttribute(converterType) { }
 
-    [JsonPropertyName("identifier")]
-    string Identifier { get; }
+public class IBaseCommandConverter : JsonConverter<IBaseCommand> {
+    public override IBaseCommand Read(ref Utf8JsonReader reader, Type typeToConvert, JsonSerializerOptions options) {
+        throw new NotImplementedException();
+    }
+
+    public override void Write(Utf8JsonWriter writer, IBaseCommand value, JsonSerializerOptions options) {
+        switch (value) {
+            case null: {
+                JsonSerializer.Serialize(writer, (IBaseCommand?)null, options);
+                break;
+            }
+            default: {
+                Type type = value.GetType();
+                JsonSerializer.Serialize(writer, value, type, options);
+                break;
+            }
+        }
+    }
 }
+
+[JsonInterfaceConverter(typeof(IBaseCommandConverter))]
+public interface IBaseCommand { }
 
 public abstract class BaseCommand : IBaseCommand {
     [JsonIgnore]
@@ -22,13 +41,19 @@ public abstract class BaseCommand : IBaseCommand {
         WriteIndented = false
     };
 
-    public virtual string Command { get; } = string.Empty;
+    [JsonPropertyName("command")]
+    public string Command { get => GetCommand; }
 
+    [JsonPropertyName("identifier")]
     public string Identifier { get => SerializeIdent; }
 
     [JsonPropertyName("data")]
     public string Data { get => SerializeData(); }
 
+    [JsonIgnore]
+    internal virtual string GetCommand => "message";
+
+    [JsonIgnore]
     internal virtual string SerializeIdent => "{\"channel\":\"GatewayChannel\"}";
 
     internal abstract string SerializeData();
