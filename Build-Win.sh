@@ -1,6 +1,6 @@
 #!/bin/bash
 
-VERSION="3.4.7"
+VERSION="3.5.0"
 CURRENT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 dotnet restore "$CURRENT_DIR"
@@ -15,6 +15,7 @@ dotnet publish -c Release -r win-x64 "$CURRENT_DIR/SubLink.Fansly/SubLink.Fansly
 dotnet publish -c Release -r win-x64 "$CURRENT_DIR/SubLink.OBS/SubLink.OBS.csproj" /p:Version="$VERSION" /p:SkipInvalidConfigurations=true
 dotnet publish -c Release -r win-x64 "$CURRENT_DIR/SubLink.OpenShock/SubLink.OpenShock.csproj" /p:Version="$VERSION" /p:SkipInvalidConfigurations=true
 dotnet publish -c Release -r win-x64 "$CURRENT_DIR/SubLink.Discord/SubLink.Discord.csproj" /p:Version="$VERSION" /p:SkipInvalidConfigurations=true
+dotnet publish -c Release -r win-x64 "$CURRENT_DIR/SubLink.Joystick/SubLink.Joystick.csproj" /p:Version="$VERSION" /p:SkipInvalidConfigurations=true
 
 BUILD_DIR="build-$VERSION"
 mkdir -p "$BUILD_DIR"
@@ -32,6 +33,7 @@ cp "SubLink.Fansly/bin/Release/net8.0/win-x64/publish/SubLink.Fansly.dll" "$BUIL
 cp "SubLink.OBS/bin/Release/net8.0/win-x64/publish/SubLink.OBS.dll" "$BUILD_DIR/Platforms/"
 cp "SubLink.OpenShock/bin/Release/net8.0/win-x64/publish/SubLink.OpenShock.dll" "$BUILD_DIR/Platforms/"
 cp "SubLink.Discord/bin/Release/net8.0/win-x64/publish/SubLink.Discord.dll" "$BUILD_DIR/Platforms/"
+cp "SubLink.Joystick/bin/Release/net8.0/win-x64/publish/SubLink.Joystick.dll" "$BUILD_DIR/Platforms/"
 
 mkdir -p builds
 
