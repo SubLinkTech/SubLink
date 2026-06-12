@@ -39,6 +39,14 @@ public sealed class JoystickRules : IPlatformRules {
     internal Func<JoystickAmountEventArgs, Task>? OnJoystickViewerCountUpdated;
     internal Func<JoystickAmountEventArgs, Task>? OnJoystickSubscriberCountUpdated;
     internal Func<JoystickWhoWhatTitleAmountEventArgs, Task>? OnJoystickMilestoneCompleted;
+    internal Func<JoystickPvpSessionRequestedEventArgs, Task>? OnJoystickPvpSessionRequested;
+    internal Func<JoystickPvpSessionReadyEventArgs, Task>? OnJoystickPvpSessionReady;
+    internal Func<JoystickPvpSessionStartedEventArgs, Task>? OnJoystickPvpSessionStarted;
+    internal Func<JoystickWhoWhatWhenWhereEventArgs, Task>? OnJoystickPvpSessionEnding;
+    internal Func<JoystickWhoWhatWhenWhereEventArgs, Task>? OnJoystickPvpSessionEnded;
+    internal Func<JoystickSceneUpdatedEventArgs, Task>? OnJoystickSceneUpdated;
+    internal Func<JoystickEventArgs, Task>? OnJoystickSettingsUpdated;
+    internal Func<JoystickWhoEventArgs, Task>? OnJoystickStreamModeUpdated;
     internal Func<JoystickWhoWhatEventArgs, Task>? OnJoystickUserMuted;
     internal Func<JoystickWhoWhatEventArgs, Task>? OnJoystickUserUnmuted;
     internal Func<JoystickEventArgs, Task>? OnJoystickDeviceConnected;
@@ -79,6 +87,14 @@ public sealed class JoystickRules : IPlatformRules {
     public void ReactToViewerCountUpdated(Func<JoystickAmountEventArgs, Task> with) { OnJoystickViewerCountUpdated = with; }
     public void ReactToSubscriberCountUpdated(Func<JoystickAmountEventArgs, Task> with) { OnJoystickSubscriberCountUpdated = with; }
     public void ReactToMilestoneCompleted(Func<JoystickWhoWhatTitleAmountEventArgs, Task> with) { OnJoystickMilestoneCompleted = with; }
+    public void ReactToPvpSessionRequested(Func<JoystickPvpSessionRequestedEventArgs, Task> with) { OnJoystickPvpSessionRequested = with; }
+    public void ReactToPvpSessionReady(Func<JoystickPvpSessionReadyEventArgs, Task> with) { OnJoystickPvpSessionReady = with; }
+    public void ReactToPvpSessionStarted(Func<JoystickPvpSessionStartedEventArgs, Task> with) { OnJoystickPvpSessionStarted = with; }
+    public void ReactToPvpSessionEnding(Func<JoystickWhoWhatWhenWhereEventArgs, Task> with) { OnJoystickPvpSessionEnding = with; }
+    public void ReactToPvpSessionEnded(Func<JoystickWhoWhatWhenWhereEventArgs, Task> with) { OnJoystickPvpSessionEnded = with; }
+    public void ReactToSceneUpdated(Func<JoystickSceneUpdatedEventArgs, Task> with) { OnJoystickSceneUpdated = with; }
+    public void ReactToSettingsUpdated(Func<JoystickEventArgs, Task> with) { OnJoystickSettingsUpdated = with; }
+    public void ReactToStreamModeUpdated(Func<JoystickWhoEventArgs, Task> with) { OnJoystickStreamModeUpdated = with; }
     public void ReactToUserMuted(Func<JoystickWhoWhatEventArgs, Task> with) { OnJoystickUserMuted = with; }
     public void ReactToUserUnmuted(Func<JoystickWhoWhatEventArgs, Task> with) { OnJoystickUserUnmuted = with; }
     public void ReactToDeviceConnected(Func<JoystickEventArgs, Task> with) { OnJoystickDeviceConnected = with; }

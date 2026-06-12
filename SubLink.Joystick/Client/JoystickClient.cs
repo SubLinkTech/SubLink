@@ -61,6 +61,14 @@ internal sealed class JoystickClient(ILogger logger) {
     public event EventHandler<JoystickAmountEventArgs>? OnJoystickViewerCountUpdated;
     public event EventHandler<JoystickAmountEventArgs>? OnJoystickSubscriberCountUpdated;
     public event EventHandler<JoystickWhoWhatTitleAmountEventArgs>? OnJoystickMilestoneCompleted;
+    public event EventHandler<JoystickPvpSessionRequestedEventArgs>? OnJoystickPvpSessionRequested;
+    public event EventHandler<JoystickPvpSessionReadyEventArgs>? OnJoystickPvpSessionReady;
+    public event EventHandler<JoystickPvpSessionStartedEventArgs>? OnJoystickPvpSessionStarted;
+    public event EventHandler<JoystickWhoWhatWhenWhereEventArgs>? OnJoystickPvpSessionEnding;
+    public event EventHandler<JoystickWhoWhatWhenWhereEventArgs>? OnJoystickPvpSessionEnded;
+    public event EventHandler<JoystickSceneUpdatedEventArgs>? OnJoystickSceneUpdated;
+    public event EventHandler<JoystickEventArgs>? OnJoystickSettingsUpdated;
+    public event EventHandler<JoystickWhoEventArgs>? OnJoystickStreamModeUpdated;
     public event EventHandler<JoystickWhoWhatEventArgs>? OnJoystickUserMuted;
     public event EventHandler<JoystickWhoWhatEventArgs>? OnJoystickUserUnmuted;
     public event EventHandler<JoystickEventArgs>? OnJoystickDeviceConnected;
@@ -455,6 +463,53 @@ internal sealed class JoystickClient(ILogger logger) {
                 MilestoneCompletedEvent eventMsg = (MilestoneCompletedEvent)inMsg;
                 OnJoystickMilestoneCompleted?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
                     eventMsg.Metadata.What, eventMsg.Metadata.Title, eventMsg.Metadata.Amount));
+                return;
+            }
+            case PvpSessionRequestedEvent: {
+                PvpSessionRequestedEvent eventMsg = (PvpSessionRequestedEvent)inMsg;
+                OnJoystickPvpSessionRequested?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What, eventMsg.Metadata.When, eventMsg.Metadata.Where, eventMsg.Metadata.Cost));
+                return;
+            }
+            case PvpSessionReadyEvent: {
+                PvpSessionReadyEvent eventMsg = (PvpSessionReadyEvent)inMsg;
+                OnJoystickPvpSessionReady?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.When, eventMsg.Metadata.Where, eventMsg.Metadata.Cost));
+                return;
+            }
+            case PvpSessionStartedEvent: {
+                PvpSessionStartedEvent eventMsg = (PvpSessionStartedEvent)inMsg;
+                OnJoystickPvpSessionStarted?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What, eventMsg.Metadata.When, eventMsg.Metadata.Where, eventMsg.Metadata.State));
+                return;
+            }
+            case PvpSessionEndingEvent: {
+                PvpSessionEndingEvent eventMsg = (PvpSessionEndingEvent)inMsg;
+                OnJoystickPvpSessionEnding?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What, eventMsg.Metadata.When, eventMsg.Metadata.Where));
+                return;
+            }
+            case PvpSessionEndedEvent: {
+                PvpSessionEndedEvent eventMsg = (PvpSessionEndedEvent)inMsg;
+                OnJoystickPvpSessionEnded?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who,
+                    eventMsg.Metadata.What, eventMsg.Metadata.When, eventMsg.Metadata.Where));
+                return;
+            }
+            case SceneUpdatedEvent: {
+                SceneUpdatedEvent eventMsg = (SceneUpdatedEvent)inMsg;
+                OnJoystickSceneUpdated?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Name,
+                    eventMsg.Metadata.Config.FontSize, eventMsg.Metadata.Config.TitleColor,
+                    eventMsg.Metadata.Config.ProgressColor, eventMsg.Metadata.Config.CompletedColor));
+                return;
+            }
+            case SettingsUpdatedEvent: {
+                SettingsUpdatedEvent eventMsg = (SettingsUpdatedEvent)inMsg;
+                OnJoystickSettingsUpdated?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt));
+                return;
+            }
+            case StreamModeUpdatedEvent: {
+                StreamModeUpdatedEvent eventMsg = (StreamModeUpdatedEvent)inMsg;
+                OnJoystickStreamModeUpdated?.Invoke(this, new(eventMsg.Text, eventMsg.CreatedAt, eventMsg.Metadata.Who));
                 return;
             }
             case UserMutedEvent: {

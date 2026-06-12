@@ -38,6 +38,16 @@ internal sealed partial class JoystickService {
         _client.OnJoystickViewerCountUpdated += OnJoystickViewerCountUpdated;
         _client.OnJoystickSubscriberCountUpdated += OnJoystickSubscriberCountUpdated;
         _client.OnJoystickMilestoneCompleted += OnJoystickMilestoneCompleted;
+        _client.OnJoystickPvpSessionRequested += OnJoystickPvpSessionRequested;
+        _client.OnJoystickPvpSessionReady += OnJoystickPvpSessionReady;
+        _client.OnJoystickPvpSessionStarted += OnJoystickPvpSessionStarted;
+        _client.OnJoystickPvpSessionEnding += OnJoystickPvpSessionEnding;
+        _client.OnJoystickPvpSessionEnded += OnJoystickPvpSessionEnded;
+        _client.OnJoystickSceneUpdated += OnJoystickSceneUpdated;
+        _client.OnJoystickSettingsUpdated += OnJoystickSettingsUpdated;
+        _client.OnJoystickStreamModeUpdated += OnJoystickStreamModeUpdated;
+        _client.OnJoystickUserMuted += OnJoystickUserMuted;
+        _client.OnJoystickUserUnmuted += OnJoystickUserUnmuted;
         _client.OnJoystickDeviceConnected += OnJoystickDeviceConnected;
         _client.OnJoystickDeviceDisconnected += OnJoystickDeviceDisconnected;
         _client.OnJoystickDeviceSettingsUpdated += OnJoystickDeviceSettingsUpdated;
@@ -251,6 +261,62 @@ internal sealed partial class JoystickService {
     private void OnJoystickMilestoneCompleted(object? sender, JoystickWhoWhatTitleAmountEventArgs e) {
         Task.Run(async () => {
             if (_rules is JoystickRules { OnJoystickMilestoneCompleted: { } callback })
+                await callback(e);
+        });
+    }
+
+    private void OnJoystickPvpSessionRequested(object? sender, JoystickPvpSessionRequestedEventArgs e) {
+        Task.Run(async () => {
+            if (_rules is JoystickRules { OnJoystickPvpSessionRequested: { } callback })
+                await callback(e);
+        });
+    }
+
+    private void OnJoystickPvpSessionReady(object? sender, JoystickPvpSessionReadyEventArgs e) {
+        Task.Run(async () => {
+            if (_rules is JoystickRules { OnJoystickPvpSessionReady: { } callback })
+                await callback(e);
+        });
+    }
+
+    private void OnJoystickPvpSessionStarted(object? sender, JoystickPvpSessionStartedEventArgs e) {
+        Task.Run(async () => {
+            if (_rules is JoystickRules { OnJoystickPvpSessionStarted: { } callback })
+                await callback(e);
+        });
+    }
+
+    private void OnJoystickPvpSessionEnding(object? sender, JoystickWhoWhatWhenWhereEventArgs e) {
+        Task.Run(async () => {
+            if (_rules is JoystickRules { OnJoystickPvpSessionEnding: { } callback })
+                await callback(e);
+        });
+    }
+
+    private void OnJoystickPvpSessionEnded(object? sender, JoystickWhoWhatWhenWhereEventArgs e) {
+        Task.Run(async () => {
+            if (_rules is JoystickRules { OnJoystickPvpSessionEnded: { } callback })
+                await callback(e);
+        });
+    }
+
+    private void OnJoystickSceneUpdated(object? sender, JoystickSceneUpdatedEventArgs e) {
+        Task.Run(async () => {
+            if (_rules is JoystickRules { OnJoystickSceneUpdated: { } callback })
+                await callback(e);
+        });
+    }
+
+    private void OnJoystickSettingsUpdated(object? sender, JoystickEventArgs e) {
+        Task.Run(async () => {
+            if (_rules is JoystickRules { OnJoystickSettingsUpdated: { } callback })
+                await callback(e);
+        });
+    }
+
+    private void OnJoystickStreamModeUpdated(object? sender, JoystickWhoEventArgs e) {
+        Task.Run(async () => {
+            if (_rules is JoystickRules { OnJoystickStreamModeUpdated: { } callback })
                 await callback(e);
         });
     }

@@ -33,17 +33,14 @@ namespace xyz.yewnyx.SubLink.Joystick.Client.Data.Event;
 [JsonDerivedType(typeof(ViewerCountUpdatedEvent), "ViewerCountUpdated")]
 [JsonDerivedType(typeof(SubscriberCountUpdatedEvent), "SubscriberCountUpdated")]
 [JsonDerivedType(typeof(MilestoneCompletedEvent), "MilestoneCompleted")]
-/*
-- PvpSessionRequested (event = StreamEvent)
-- PvpSessionReady (event = StreamEvent)
-- PvpSessionStarted (event = StreamEvent)
-- PvpSessionEnding (event = StreamEvent)
-- PvpSessionEnded (event = StreamEvent)
-
-- SceneUpdated (event = StreamEvent)
-- SettingsUpdated (event = StreamEvent)
-- StreamModeUpdated (event = StreamEvent)
-*/
+[JsonDerivedType(typeof(PvpSessionRequestedEvent), "PvpSessionRequested")]
+[JsonDerivedType(typeof(PvpSessionReadyEvent), "PvpSessionReady")]
+[JsonDerivedType(typeof(PvpSessionStartedEvent), "PvpSessionStarted")]
+[JsonDerivedType(typeof(PvpSessionEndingEvent), "PvpSessionEnding")]
+[JsonDerivedType(typeof(PvpSessionEndedEvent), "PvpSessionEnded")]
+[JsonDerivedType(typeof(SceneUpdatedEvent), "SceneUpdated")]
+[JsonDerivedType(typeof(SettingsUpdatedEvent), "SettingsUpdated")]
+[JsonDerivedType(typeof(StreamModeUpdatedEvent), "StreamModeUpdated")]
 [JsonDerivedType(typeof(UserMutedEvent), "UserMuted")]
 [JsonDerivedType(typeof(UserUnmutedEvent), "UserUnmuted")]
 [JsonDerivedType(typeof(DeviceConnectedEvent), "DeviceConnected")]

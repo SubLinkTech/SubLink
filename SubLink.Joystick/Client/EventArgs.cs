@@ -85,14 +85,33 @@ public class JoystickWhoEventArgs : JoystickEventArgs {
         (Text, CreatedAt, Who) = (text, createdAt, who);
 }
 
-public class JoystickWhoWhatEventArgs : JoystickEventArgs {
-    public string Who { get; set; } = string.Empty;
+public class JoystickWhoWhatEventArgs : JoystickWhoEventArgs {
     public string What { get; set; } = string.Empty;
 
     public JoystickWhoWhatEventArgs() { }
 
     public JoystickWhoWhatEventArgs(string text, string createdAt, string who, string what) =>
         (Text, CreatedAt, Who, What) = (text, createdAt, who, what);
+}
+
+public class JoystickWhoWhenWhereEventArgs : JoystickWhoEventArgs {
+    public string When { get; set; } = string.Empty;
+    public string Where { get; set; } = string.Empty;
+
+    public JoystickWhoWhenWhereEventArgs() { }
+
+    public JoystickWhoWhenWhereEventArgs(string text, string createdAt, string who, string when, string where) =>
+        (Text, CreatedAt, Who, When, Where) = (text, createdAt, who, when, where);
+}
+
+public class JoystickWhoWhatWhenWhereEventArgs : JoystickWhoWhatEventArgs {
+    public string When { get; set; } = string.Empty;
+    public string Where { get; set; } = string.Empty;
+
+    public JoystickWhoWhatWhenWhereEventArgs() { }
+
+    public JoystickWhoWhatWhenWhereEventArgs(string text, string createdAt, string who, string what, string when, string where) =>
+        (Text, CreatedAt, Who, What, When, Where) = (text, createdAt, who, what, when, where);
 }
 
 public class JoystickFollowerCountUpdatedEventArgs : JoystickEventArgs {
@@ -216,4 +235,44 @@ public class JoystickAmountEventArgs : JoystickEventArgs {
 
     public JoystickAmountEventArgs(string text, string createdAt, long amount) =>
         (Text, CreatedAt, Amount) = (text, createdAt, amount);
+}
+
+public class JoystickPvpSessionRequestedEventArgs : JoystickWhoWhatWhenWhereEventArgs {
+    public long Cost { get; set; } = 0;
+
+    public JoystickPvpSessionRequestedEventArgs() { }
+
+    public JoystickPvpSessionRequestedEventArgs(string text, string createdAt, string who, string what, string when, string where, long cost) =>
+        (Text, CreatedAt, Who, What, When, Where, Cost) = (text, createdAt, who, what, when, where, cost);
+}
+
+public class JoystickPvpSessionReadyEventArgs : JoystickWhoWhenWhereEventArgs {
+    public long Cost { get; set; } = 0;
+
+    public JoystickPvpSessionReadyEventArgs() { }
+
+    public JoystickPvpSessionReadyEventArgs(string text, string createdAt, string who, string when, string where, long cost) =>
+        (Text, CreatedAt, Who, When, Where, Cost) = (text, createdAt, who, when, where, cost);
+}
+
+public class JoystickPvpSessionStartedEventArgs : JoystickWhoWhatWhenWhereEventArgs {
+    public string State { get; set; } = string.Empty;
+
+    public JoystickPvpSessionStartedEventArgs() { }
+
+    public JoystickPvpSessionStartedEventArgs(string text, string createdAt, string who, string what, string when, string where, string state) =>
+        (Text, CreatedAt, Who, What, When, Where, State) = (text, createdAt, who, what, when, where, state);
+}
+
+public class JoystickSceneUpdatedEventArgs : JoystickEventArgs {
+    public string Name { get; set; } = string.Empty;
+    public string FontSize { get; set; } = string.Empty;
+    public string TitleColor { get; set; } = string.Empty;
+    public string ProgressColor { get; set; } = string.Empty;
+    public string CompletedColor { get; set; } = string.Empty;
+
+    public JoystickSceneUpdatedEventArgs() { }
+
+    public JoystickSceneUpdatedEventArgs(string text, string createdAt, string name, string fontSize, string titleColor, string progressColor, string completedColor) =>
+        (Text, CreatedAt, Name, FontSize, TitleColor, ProgressColor, CompletedColor) = (text, createdAt, name, fontSize, titleColor, progressColor, completedColor);
 }
