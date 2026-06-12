@@ -37,6 +37,7 @@ CatGirlEddie remains actively involved with and the foremost expert on creating 
 - [OBS Setup](Docs/Setup/OBS.md)
 - [OpenShock Setup](Docs/Setup/OpenShock.md)
 - [Discord Setup](Docs/Setup/Discord.md)
+- [Joystick Setup](Docs/Setup/Joystick.md)
 
 ## Data Types
 
@@ -48,12 +49,14 @@ CatGirlEddie remains actively involved with and the foremost expert on creating 
 - [OBS Data Types](Docs/DataTypes/OBS/Index.md)
 - [OpenShock Data Types](Docs/DataTypes/OpenShock/Index.md)
 - [Discord Data Types](Docs/DataTypes/Discord/Index.md)
+- [Joystick Data Types](Docs/DataTypes/Joystick/Index.md)
 
 ## Actions
 
 - [OBS Actions](Docs/Actions/OBS/Index.md)
 - [OpenShock Actions](Docs/Actions/OpenShock/Index.md)
 - [Discord Actions](Docs/Actions/Discord/Index.md)
+- [Joystick Actions](Docs/Actions/Joystick/Index.md)
 
 ## Adding Support to Avatars
 

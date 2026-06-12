@@ -8,7 +8,7 @@
     </PropertyGroup>
     <ItemGroup>
       <InputAssemblies Include="$(TargetDir)/*.dll"
-                        Exclude="$(TargetDir)/System.Text.Json.dll" />
+                       Exclude="$(TargetDir)/System.Text.Json.dll;$(TargetDir)/System.Text.Encodings.Web.dll" />
       <InputAssemblies Include="$(TargetDir)/runtimes/win/**/*.dll" />
     </ItemGroup>
 
