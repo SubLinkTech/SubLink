@@ -1,0 +1,3 @@
+[submodule "SubLink.References"]
+	path = SubLink.References
+	url = https://github.com/SubLinkTech/SubLink.References.git
