@@ -9,8 +9,8 @@
    1. Open OBS
    2. Select `Tools` > `WebSocket Server Settings`
    3. Make sure `Enable WebSocket Server` is checked
-   4. Select `Show Connect Info`  
-![OBS Socket Info](https://raw.githubusercontent.com/yewnyx/SubLink/master/Docs/obs-socket-info.png?raw=true "OBS Socket Info")
+   4. Select `Show Connect Info`
+![OBS Socket Info](../obs-socket-info.png "OBS Socket Info")
 1. Set the `Enabled` setting to `true` in `Settings/OBS.json`.
 2. Add the `Server IP` value to the `Settings/OBS.json` file's `ServerIp` setting.
 3. Add the `Server Port` value to the `Settings/OBS.json` file's `ServerPort` setting.
